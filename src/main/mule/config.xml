@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:google-drive="http://www.mulesoft.org/schema/mule/google-drive"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/google-drive http://www.mulesoft.org/schema/mule/google-drive/current/mule-google-drive.xsd">
+
+	<!-- HTTP/S Listener Configuration -->
+	<http:listener-config name="HTTP_Listener_config"
+		doc:name="HTTP Listener config"
+		doc:id="6dde3d45-97bc-4fb9-8a9a-d4a9b1496a19">
+		<http:listener-connection protocol="HTTPS"
+			host="0.0.0.0" port="8082">
+			<tls:context>
+				<tls:key-store type="jks"
+					path="keystore/passwordVaultKeystore.jks" keyPassword="deX@#8158"
+					password="deX@#8158" alias="passwordvault" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+
+	<!-- Google Drive Connector Configuration -->
+	<google-drive:config
+		name="Google_Drive_Connector_Config"
+		doc:name="Google Drive Connector Config"
+		doc:id="8d2822b0-9128-4898-a42e-3185b114a857">
+		<google-drive:oauth2-connection
+			protocol="HTTPS">
+			<tls:context>
+				<tls:key-store type="jks" path="mule.jks"
+					keyPassword="password" password="password" />
+			</tls:context>
+			<google-drive:oauth-authorization-code
+				consumerKey="744917679130-iflotkhh55ifit86pi25isr9qf9kgcbr.apps.googleusercontent.com"
+				consumerSecret="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" />
+			<google-drive:oauth-callback-config
+				listenerConfig="HTTP_Listener_config" callbackPath="/excallbackurl"
+				authorizePath="/authorize"
+				externalCallbackUrl="https://localhost:8082/excallbackurl" />
+		</google-drive:oauth2-connection>
+	</google-drive:config>
+	
+</mule>
