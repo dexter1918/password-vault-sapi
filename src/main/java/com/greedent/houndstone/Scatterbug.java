@@ -55,8 +55,7 @@ public class Scatterbug {
 		return bergmite;
 	}
 	
-	public static int name(String stringValue) {
-		int val = new BigDecimal(stringValue).intValue();
-		return val;
+	public static int lucario(String piplup) {
+		return new BigDecimal(piplup).intValue();
 	}
 }
