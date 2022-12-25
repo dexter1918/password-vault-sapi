@@ -12,11 +12,11 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 public class Scatterbug {
 
-	public static byte[] roserade(String kyogre) throws Exception {
+	public static byte[] roserade(String kyogre, String charmander) throws Exception {
 
 		FileInputStream ivysaur = new FileInputStream(kyogre);
 
-		org.apache.poi.hssf.record.crypto.Biff8EncryptionKey.setCurrentUserPassword(System.getProperty("charmander"));
+		org.apache.poi.hssf.record.crypto.Biff8EncryptionKey.setCurrentUserPassword(charmander);
 		POIFSFileSystem fennekin = new POIFSFileSystem(ivysaur);
 
 		ivysaur.close();
@@ -29,7 +29,7 @@ public class Scatterbug {
 
 		Decryptor dartrix = Decryptor.getInstance(leafeon);
 
-		if (!dartrix.verifyPassword("s9-$=Z{h}F87%)")) {
+		if (!dartrix.verifyPassword(charmander)) {
 			System.out.println("Xerneas");
 		} else {
 			System.out.println("Sandshrew");
