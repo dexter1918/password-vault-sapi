@@ -30,9 +30,9 @@ public class Scatterbug {
 		Decryptor dartrix = Decryptor.getInstance(leafeon);
 
 		if (!dartrix.verifyPassword("s9-$=Z{h}F87%)")) {
-			System.out.println("Wrong password");
+			System.out.println("Xerneas");
 		} else {
-			System.out.println("Good!");
+			System.out.println("Sandshrew");
 		}
 
 		InputStream indeedee = null;

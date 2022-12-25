@@ -1,0 +1,33 @@
+listener:
+  path: "*"
+
+https:
+  host: "0.0.0.0"
+  port: "8082"
+
+keystore:
+  type: "JKS"
+  path: "keystore/passwordVaultKeystore.jks"
+  alias: "![nu4HMk+e5pJhmRfaCZq2FQ==]"
+  password: "![yxUPeVsEN+OPBuss2GCRvw==]"
+  
+porygon: "${mule.home}/apps/${app.name}/src/main/resources/Roselia.xlsx"
+
+file:
+  id: "![Wnv5L5LOfdxN+jxZ7Tk7Mad7qyVa3iFPkQAq+Fn2WDIEJc/AXMjg4KzTER8RazRB]"
+
+drive:
+  oauth2Connection:
+    accessType: "offline"
+    prompt: "consent"
+    baseURI: "https://www.googleapis.com/drive/v3"
+  oauthAuthorizationCode:
+    consumerKey: "![YZuif5NZTPtLNzBo3/qPqevq3tXJAol8o5R+yQKTOQFooFgKqWJryyoCKw0agiDHBbDHFFMVDnDxpAte4uTBcklNvfhpN6m8L9Dgtl8IYEc=]"
+    authURL: "https://accounts.google.com/o/oauth2/auth"
+    accessTokenURL: "https://accounts.google.com/o/oauth2/token"
+    scopes: "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.photos.readonly https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.scripts"
+  oauthCallbackConfig:
+    callbackPath: "/excallbackurl"
+    authorizePath: "/authorize"
+    excallbackurl: "https://password-vault-sapi.us-e2.cloudhub.io/excallbackurl"
+    
