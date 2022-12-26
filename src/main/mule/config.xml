@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+<mule
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
 	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
 	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
-	xmlns:google-drive="http://www.mulesoft.org/schema/mule/google-drive" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:google-drive="http://www.mulesoft.org/schema/mule/google-drive"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/google-drive http://www.mulesoft.org/schema/mule/google-drive/current/mule-google-drive.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
-http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 
 	<!-- APIKit Configuration -->
-    <apikit:config name="password-vault-sapi-config" api="password-vault-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<apikit:config name="password-vault-sapi-config"
+		api="password-vault-sapi.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
 
 	<!-- HTTP/S Listener Configuration -->
 	<http:listener-config name="HTTP_Listener_config"
@@ -25,7 +34,8 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 			<tls:context>
 				<tls:key-store type="${keystore.type}"
 					path="${keystore.path}" keyPassword="${secure::keystore.password}"
-					password="${secure::keystore.password}" alias="${secure::keystore.alias}" />
+					password="${secure::keystore.password}"
+					alias="${secure::keystore.alias}" />
 			</tls:context>
 		</http:listener-connection>
 	</http:listener-config>
@@ -36,23 +46,48 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		doc:name="Google Drive Connector Config"
 		doc:id="8d2822b0-9128-4898-a42e-3185b114a857">
 		<google-drive:oauth2-connection
-			protocol="HTTPS" access_type="${drive.oauth2Connection.accessType}" prompt="${drive.oauth2Connection.prompt}" baseUri="${drive.oauth2Connection.baseURI}">
+			protocol="HTTPS" access_type="${drive.oauth2Connection.accessType}"
+			prompt="${drive.oauth2Connection.prompt}"
+			baseUri="${drive.oauth2Connection.baseURI}">
 			<tls:context>
 				<tls:key-store type="jks" path="mule.jks"
 					keyPassword="password" password="password" />
 			</tls:context>
 			<google-drive:oauth-authorization-code
 				consumerKey="${secure::drive.oauthAuthorizationCode.consumerKey}"
-				consumerSecret="${consumerSecret}" authorizationUrl="${drive.oauthAuthorizationCode.authURL}" accessTokenUrl="${drive.oauthAuthorizationCode.accessTokenURL}" scopes="${drive.oauthAuthorizationCode.scopes}"/>
+				consumerSecret="${consumerSecret}"
+				authorizationUrl="${drive.oauthAuthorizationCode.authURL}"
+				accessTokenUrl="${drive.oauthAuthorizationCode.accessTokenURL}"
+				scopes="${drive.oauthAuthorizationCode.scopes}" />
 			<google-drive:oauth-callback-config
-				listenerConfig="HTTP_Listener_config" callbackPath="${drive.oauthCallbackConfig.callbackPath}"
+				listenerConfig="HTTP_Listener_config"
+				callbackPath="${drive.oauthCallbackConfig.callbackPath}"
 				authorizePath="${drive.oauthCallbackConfig.authorizePath}"
 				externalCallbackUrl="${drive.oauthCallbackConfig.excallbackurl}" />
 		</google-drive:oauth2-connection>
 	</google-drive:config>
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="12eecfb5-f4c4-4507-9768-8d1372a46da1" file="configFiles/${environment}-config.yaml" key="${arcanine}" />
-	<configuration-properties doc:name="Configuration properties" doc:id="803e13dc-6eec-480d-9de0-db1f2c4fff8c" file="configFiles/${environment}-config.yaml" />
-	<configuration doc:name="Configuration" doc:id="4e87c281-4844-4657-a897-022a84fc7e13" defaultErrorHandler-ref="Error_Handler" />
-	<api-gateway:autodiscovery apiId="${apiInstanceId}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="36acd9d7-fb00-4193-a5b2-5feef4746b3e" flowRef="password-vault-sapi-main" />
 	
+	<secure-properties:config
+		name="Secure_Properties_Config" doc:name="Secure Properties Config"
+		doc:id="12eecfb5-f4c4-4507-9768-8d1372a46da1"
+		file="configFiles/${environment}-config.yaml" key="${arcanine}" />
+		
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="803e13dc-6eec-480d-9de0-db1f2c4fff8c"
+		file="configFiles/${environment}-config.yaml" />
+		
+	<configuration doc:name="Configuration"
+		doc:id="4e87c281-4844-4657-a897-022a84fc7e13"
+		defaultErrorHandler-ref="Error_Handler" />
+		
+	<api-gateway:autodiscovery
+		apiId="${apiInstanceId}" ignoreBasePath="true"
+		doc:name="API Autodiscovery"
+		doc:id="36acd9d7-fb00-4193-a5b2-5feef4746b3e"
+		flowRef="password-vault-sapi-main" />
+		
+	<os:object-store name="Object_store"
+		doc:name="Object store" doc:id="14bbec0e-afa7-4c84-8968-0a71b3478f33"
+		persistent="false" maxEntries="1" expirationInterval="0" />
 </mule>

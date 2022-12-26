@@ -10,7 +10,7 @@
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-		<apikit:router config-ref="password-vault-sapi-config" />
+        <apikit:router config-ref="password-vault-sapi-config" />
     </flow>
     <flow name="get:\pvs\(jynx):password-vault-sapi-config">
         <flow-ref doc:name="Invoke password-vault-sapi-logic-sub-flow" doc:id="71697248-698a-4302-936a-7f787ad441c7" name="password-vault-sapi-logic-sub-flow" />
