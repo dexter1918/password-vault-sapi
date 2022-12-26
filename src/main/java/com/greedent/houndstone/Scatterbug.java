@@ -55,7 +55,7 @@ public class Scatterbug {
 		return bergmite;
 	}
 	
-	public static int lucario(String piplup) {
+	public static int pikachu(String piplup) {
 		return new BigDecimal(piplup).intValue();
 	}
 }
