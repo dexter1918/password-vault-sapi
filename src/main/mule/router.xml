@@ -3,16 +3,18 @@
     <flow name="password-vault-sapi-main">
         <http:listener config-ref="HTTP_Listener_config" path="${listener.path}">
             <http:response statusCode="#[vars.httpStatus default 200]">
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers><![CDATA[#[( vars.outboundHeaders ++ { "Access-Control-Allow-Origin": "*" } ) default {}]]]></http:headers>
             </http:response>
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[payload]]]></http:body>
-                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+                <http:headers><![CDATA[#[( vars.outboundHeaders ++ { "Access-Control-Allow-Origin": "*" } ) default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="password-vault-sapi-config" />
+        <set-variable value="#[uuid()]" doc:name="Set UUID for tracking" doc:id="05fce0f9-eade-4b5c-b170-f921d80bd93a" variableName="uuid"/>
+		<apikit:router config-ref="password-vault-sapi-config" />
     </flow>
     <flow name="get:\pvs\(jynx):password-vault-sapi-config">
-        <flow-ref doc:name="Invoke password-vault-sapi-logic-sub-flow" doc:id="71697248-698a-4302-936a-7f787ad441c7" name="password-vault-sapi-logic-sub-flow" />
+        <logger level="INFO" doc:name="Before invoking password-vault-sapi-logic-sub-flow" doc:id="939c31d4-16fa-45b6-b72f-af365fd059f8" message='#[vars.uuid ++ ": Before invoking password-vault-sapi-logic-sub-flow."]' />
+		<flow-ref doc:name="Invoke password-vault-sapi-logic-sub-flow" doc:id="71697248-698a-4302-936a-7f787ad441c7" name="password-vault-sapi-logic-sub-flow" />
     </flow>
 </mule>
